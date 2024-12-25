@@ -13,17 +13,25 @@ export class Board {
     this.createCells();
     this.setStartAndEndPoints();
     this.placeObstacles();
-    this.createAgents(agentsCount);
+    // this.createAgents(agentsCount);
 
     return this;
   };
 
-  public updateAgents = () => {
-    this.agents.forEach((agent) => agent.move(this));
-  };
+  // public updateAgents = () => {
+  //   this.agents.forEach((agent) => agent.move(this));
+  // };
 
-  public getCell(x: number, y: number): Cell {
-    return this.map[y][x];
+  public getEndCell() {
+    return this.end!;
+  }
+
+  public getStartCell(): Cell {
+    return this.start!;
+  }
+
+  public getCell(x: number, y: number) {
+    return this.map?.[y]?.[x];
   }
 
   public getMap = () => {
@@ -34,31 +42,41 @@ export class Board {
     return this.agents;
   };
 
+  isCellValid(x: number, y: number): boolean {
+    const cell = this.getCell(x, y);
+
+    if (cell && cell.type !== ECell.WALL) {
+      return true;
+    }
+
+    return false;
+  }
+
   public getVisualizedMap = () => {
     return this.map.map((row) => row.map((cell) => cell.type));
   };
 
-  private createAgents = (count: number) => {
-    const agents: Agent[] = [];
+  // private createAgents = (count: number) => {
+  //   const agents: Agent[] = [];
 
-    const getRandomAgentColor = () => {
-      const colors = Object.values(EAgentColor);
-      const randomIndex = Math.floor(Math.random() * colors.length);
-      return colors[randomIndex];
-    };
+  //   const getRandomAgentColor = () => {
+  //     const colors = Object.values(EAgentColor);
+  //     const randomIndex = Math.floor(Math.random() * colors.length);
+  //     return colors[randomIndex];
+  //   };
 
-    if (!this.start || !this.end) {
-      throw new Error("Start or end point not found");
-    }
+  //   if (!this.start || !this.end) {
+  //     throw new Error("Start or end point not found");
+  //   }
 
-    for (let i = 0; i < count; i++) {
-      agents.push(
-        new Agent(this.start.x, this.start.y, getRandomAgentColor(), `${i}`)
-      );
-    }
+  //   for (let i = 0; i < count; i++) {
+  //     agents.push(
+  //       new Agent(this.start.x, this.start.y, getRandomAgentColor(), `${i}`)
+  //     );
+  //   }
 
-    this.agents = agents;
-  };
+  //   this.agents = agents;
+  // };
 
   private createCells() {
     for (let y = 0; y < this.size; y++) {

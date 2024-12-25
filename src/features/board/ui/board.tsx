@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Board } from "../model/board";
 import CellComponent from "~/entities/cell/ui/cell";
-import AgentComponent from "~/entities/agent/ui/agent";
+import Game from "~/widgets/environment/ui/environment";
 
 const BOARD_SIZE = 10;
 const AGENT_COUNT = 5;
@@ -12,29 +12,34 @@ const AGENT_SIZE = 20;
 
 const BoardComponent = () => {
   const [board, setBoard] = useState<Board | null>(null);
-  const [, setTick] = useState(0);
   useEffect(() => {
     const newBoard = new Board(BOARD_SIZE);
 
     setBoard(newBoard.init(AGENT_COUNT));
   }, []);
 
-  useEffect(() => {
-    if (board) {
-      const interval = setInterval(() => {
-        board.updateAgents();
-        setTick((prev) => prev + 1);
-      }, 1000);
+  // useEffect(() => {
+  //   if (board) {
+  //     const interval = setInterval(() => {
+  //       board.updateAgents();
+  //       setTick((prev) => prev + 1);
+  //     }, 1000);
 
-      return () => clearInterval(interval);
-    }
-  }, [board]);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [board]);
 
   if (!board) return null;
 
   return (
     <div className="w-max h-max relative">
-      {board.getAgents().map((agent, index) => (
+      <Game
+        board={board}
+        agentCount={AGENT_COUNT}
+        agentSize={AGENT_SIZE}
+        cellSize={CELL_SIZE}
+      />
+      {/* {board.getAgents().map((agent, index) => (
         <AgentComponent
           agent={agent}
           key={agent.name}
@@ -46,7 +51,7 @@ const BoardComponent = () => {
             return acc;
           }, 1)}
         />
-      ))}
+      ))} */}
       {board.getMap().map((row, y) => (
         <div className="flex w-max h-max" key={y}>
           {row.map((cell, x) => (
