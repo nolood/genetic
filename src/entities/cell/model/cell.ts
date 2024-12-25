@@ -1,5 +1,3 @@
-import { Agent } from "~/entities/agent/model/agent";
-
 export enum ECell {
   START = "start",
   END = "end",
@@ -8,8 +6,6 @@ export enum ECell {
 }
 
 export class Cell {
-  public agent: Agent[] | null = null;
-
   constructor(
     readonly x: number,
     readonly y: number,

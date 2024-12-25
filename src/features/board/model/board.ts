@@ -18,6 +18,14 @@ export class Board {
     return this;
   };
 
+  public updateAgents = () => {
+    this.agents.forEach((agent) => agent.move(this));
+  };
+
+  public getCell(x: number, y: number): Cell {
+    return this.map[y][x];
+  }
+
   public getMap = () => {
     return this.map;
   };

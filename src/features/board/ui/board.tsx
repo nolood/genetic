@@ -6,18 +6,29 @@ import CellComponent from "~/entities/cell/ui/cell";
 import AgentComponent from "~/entities/agent/ui/agent";
 
 const BOARD_SIZE = 10;
-const AGENT_COUNT = 9;
+const AGENT_COUNT = 5;
 const CELL_SIZE = 100;
 const AGENT_SIZE = 20;
 
 const BoardComponent = () => {
   const [board, setBoard] = useState<Board | null>(null);
-
+  const [, setTick] = useState(0);
   useEffect(() => {
     const newBoard = new Board(BOARD_SIZE);
 
     setBoard(newBoard.init(AGENT_COUNT));
   }, []);
+
+  useEffect(() => {
+    if (board) {
+      const interval = setInterval(() => {
+        board.updateAgents();
+        setTick((prev) => prev + 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [board]);
 
   if (!board) return null;
 
