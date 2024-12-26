@@ -9,11 +9,13 @@ const Game = ({
   agentSize,
   cellSize,
   agentCount,
+  stepCount,
 }: {
   board: Board | null;
   agentSize: number;
   cellSize: number;
   agentCount: number;
+  stepCount: number;
 }) => {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [, setTick] = useState(0);
@@ -40,13 +42,9 @@ const Game = ({
         setTick((prev) => {
           const newTick = prev + 1;
 
-          console.log("New tick:", newTick); // Для отладки
-
-          if (newTick % 10 === 0) {
+          if (newTick % stepCount === 0) {
             // Эволюция агентов, обновляем их геномы
             setAgents((prevAgents) => {
-              console.log("Evolving agents...");
-
               const evolvedAgents = evolvePopulation(
                 prevAgents,
                 endCell.x,
@@ -56,10 +54,6 @@ const Game = ({
                 board
               );
 
-              // Лог для проверки новых агентов
-              console.log("Evolved agents:", evolvedAgents);
-
-              // После эволюции сбрасываем координаты на начальные
               return evolvedAgents.map((agent) => {
                 agent.x = startCell.x;
                 agent.y = startCell.y;
@@ -68,29 +62,24 @@ const Game = ({
             });
           }
 
-          // Двигаем агентов в каждом тике
           setAgents((prevAgents) => {
             const movedAgents = prevAgents.map((agent) => {
               const step = newTick - 1;
-              agent.move(step); // Двигаем агента на 1 шаг
+              agent.move(step % stepCount);
               console.log(`Moving agent ${agent.name}:`, agent.x, agent.y);
               return agent;
             });
 
-            // Лог после движения агентов
-            console.log("Moved agents:", movedAgents);
             return movedAgents;
           });
 
           return newTick;
         });
-      }, 1000);
+      }, 100);
 
       return () => clearInterval(interval);
     }
   }, [board]);
-
-  // console.log(agents);
 
   return (
     <>

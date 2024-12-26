@@ -5,10 +5,11 @@ import { Board } from "../model/board";
 import CellComponent from "~/entities/cell/ui/cell";
 import Game from "~/widgets/environment/ui/environment";
 
-const BOARD_SIZE = 10;
-const AGENT_COUNT = 5;
+const BOARD_SIZE = 12;
+const AGENT_COUNT = 10;
 const CELL_SIZE = 100;
 const AGENT_SIZE = 20;
+const STEP_COUNT = 12;
 
 const BoardComponent = () => {
   const [board, setBoard] = useState<Board | null>(null);
@@ -34,6 +35,7 @@ const BoardComponent = () => {
   return (
     <div className="w-max h-max relative">
       <Game
+        stepCount={STEP_COUNT}
         board={board}
         agentCount={AGENT_COUNT}
         agentSize={AGENT_SIZE}

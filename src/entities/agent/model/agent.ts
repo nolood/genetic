@@ -132,10 +132,15 @@ export class Agent {
 
   // Оценка агента (чем ближе к цели, тем выше оценка)
   calculateFitness() {
-    const distance = Math.sqrt(
-      (this.goalX - this.x) ** 2 + (this.goalY - this.y) ** 2
-    );
-    this.fitness = 1 / (distance + 1); // Чем ближе, тем больше значение
+    // Чем ближе к финишу, тем выше фитнес
+    const distanceToGoal =
+      Math.abs(this.x - this.goalX) + Math.abs(this.y - this.goalY);
+    const progress = 1 / (1 + distanceToGoal); // Чем меньше расстояние, тем больше значение
+
+    // Учитывать количество пройденных шагов (по желанию)
+    // const stepsEfficiency = this.genome.length / this.step;
+
+    this.fitness = progress * 0.1; // Вес 0.1 можно варьировать
   }
 
   // Проверка, доступна ли клетка
